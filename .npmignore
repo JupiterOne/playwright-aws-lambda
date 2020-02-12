@@ -10,3 +10,4 @@ jest.config.js
 .lintstagedrc
 .prettierignore
 .prettierrc
+yarn-error.log
