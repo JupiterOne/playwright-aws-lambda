@@ -1,6 +1,8 @@
 # playwright-aws-lambda
 
-Support for PlayWright running on AWS Lambda and Google Cloud Functions
+Support for PlayWright running on AWS Lambda and Google Cloud Functions.
+
+NOTE: Currently only Chromium is supported.
 
 ## Install
 
@@ -37,6 +39,12 @@ exports.handler = async (event, context) => {
   }
 };
 ```
+
+## API
+
+| Method / Property | Returns                                  | Description                    |
+| ----------------- | ---------------------------------------- | ------------------------------ |
+| `launchChromium`  | `{!Promise<playwright.ChromiumBrowser>}` | Launches the Chromium browser. |
 
 ## Thanks / Credits
 
