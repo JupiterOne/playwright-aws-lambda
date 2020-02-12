@@ -7,6 +7,10 @@ import { LaunchOptions } from 'playwright-core/lib/server/browserType';
 const { inflate } = require('lambdafs');
 
 if (isLambdaRuntimeEnvironment()) {
+  if (process.env.FONTCONFIG_PATH === undefined) {
+    process.env.FONTCONFIG_PATH = '/tmp/aws';
+  }
+
   if (process.env.LD_LIBRARY_PATH === undefined) {
     process.env.LD_LIBRARY_PATH = '/tmp/aws/lib';
   } else if (process.env.LD_LIBRARY_PATH.startsWith('/tmp/aws/lib') !== true) {
