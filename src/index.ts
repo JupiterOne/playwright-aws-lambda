@@ -1,3 +1,5 @@
+require('playwright-core').default = require('playwright-core');
+
 import { promises as fsPromises } from 'fs';
 import { join } from 'path';
 import playwright from 'playwright-core';
