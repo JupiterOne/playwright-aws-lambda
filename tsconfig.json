@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "noUnusedLocals": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "allowJs": false,
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "target": "ESNext",
+    "pretty": true,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "paths": {
+      "~/*": ["./*"]
+    }
+  },
+  "include": ["src/**/*"]
+}

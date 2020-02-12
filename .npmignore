@@ -1,0 +1,13 @@
+/src/
+/test/
+/coverage/
+tsconfig*
+.editorconfig
+.travis.yml
+tslint.json
+jest.config.js
+.huskyrc
+.lintstagedrc
+.prettierignore
+.prettierrc
+yarn-error.log
