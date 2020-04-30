@@ -7,7 +7,7 @@ NOTE: Currently only Chromium is supported.
 ## Install
 
 ```shell
-npm install playwrite-core playwright-aws-lambda --save
+npm install playwright-core playwright-aws-lambda --save
 ```
 
 ## Usage
@@ -31,7 +31,7 @@ exports.handler = async (event, context) => {
 
     console.log('Page title: ', await page.title());
   } catch (error) {
-    throw err;
+    throw error;
   } finally {
     if (browser !== null) {
       await browser.close();
