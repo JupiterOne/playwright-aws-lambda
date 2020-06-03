@@ -2,11 +2,10 @@ import { promises as fsPromises } from 'fs';
 import { join } from 'path';
 import * as playwright from 'playwright-core';
 import isLambdaRuntimeEnvironment from './util/isLambdaRuntimeEnvironment';
-import { LaunchOptions } from 'playwright-core/lib/server/browserType';
 import isHeadlessModeEnabled from './util/isHeadlessModeEnabled';
 import fileExists from './util/fileExists';
 import setEnvironmentVariables from './util/setEnvironmentVariables';
-import getMemorySize from './util/getMemorySize';
+import { LaunchOptions } from 'playwright-core';
 
 const { inflate } = require('lambdafs');
 
@@ -17,37 +16,32 @@ setEnvironmentVariables();
  */
 export function getChromiumArgs(headless: boolean) {
   const result = [
+    '--autoplay-policy=user-gesture-required',
+    '--disable-background-networking',
     '--disable-background-timer-throttling',
+    '--disable-backgrounding-occluded-windows',
     '--disable-breakpad',
     '--disable-client-side-phishing-detection',
-    '--disable-cloud-import',
+    '--disable-component-update',
     '--disable-default-apps',
     '--disable-dev-shm-usage',
+    '--disable-domain-reliability',
     '--disable-extensions',
-    '--disable-gesture-typing',
+    '--disable-features=AudioServiceOutOfProcess',
     '--disable-hang-monitor',
-    '--disable-infobars',
+    '--disable-ipc-flooding-protection',
     '--disable-notifications',
     '--disable-offer-store-unmasked-wallet-cards',
-    '--disable-offer-upload-credit-cards',
     '--disable-popup-blocking',
     '--disable-print-preview',
     '--disable-prompt-on-repost',
+    '--disable-renderer-backgrounding',
     '--disable-setuid-sandbox',
     '--disable-speech-api',
     '--disable-sync',
-    '--disable-tab-for-desktop-share',
-    '--disable-translate',
-    '--disable-voice-input',
-    '--disable-wake-on-wifi',
     '--disk-cache-size=33554432',
-    '--enable-async-dns',
-    '--enable-simple-cache-backend',
-    '--enable-tcp-fast-open',
-    '--enable-webgl',
     '--hide-scrollbars',
     '--ignore-gpu-blacklist',
-    '--media-cache-size=33554432',
     '--metrics-recording-only',
     '--mute-audio',
     '--no-default-browser-check',
@@ -56,14 +50,9 @@ export function getChromiumArgs(headless: boolean) {
     '--no-sandbox',
     '--no-zygote',
     '--password-store=basic',
-    '--prerender-from-omnibox=disabled',
     '--use-gl=swiftshader',
     '--use-mock-keychain',
   ];
-
-  if (getMemorySize() >= 1024) {
-    result.push('--memory-pressure-off');
-  }
 
   if (headless === true) {
     result.push('--single-process');
