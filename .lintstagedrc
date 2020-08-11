@@ -1,13 +1,5 @@
 {
-  "linters": {
-    "*.ts": [
+    "*.{md,js,ts,json}": [
       "prettier --write",
-      "git add"
-    ],
-    "*.{md,js,json}": [
-      "prettier --write",
-      "git add"
     ]
-  },
-  "ignore": []
 }

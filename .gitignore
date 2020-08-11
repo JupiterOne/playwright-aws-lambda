@@ -2,3 +2,5 @@ node_modules
 coverage
 dist
 yarn-error.log
+log.txt
+package-lock.json

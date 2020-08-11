@@ -1,0 +1,23 @@
+name: CI
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10.x
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+    - name: Lint
+      run: yarn run lint
+    - name: Build project
+      run: yarn run build
+    - name: Test lambda function
+      run: bash buildbots/stub.sh
