@@ -19,7 +19,6 @@ Lambda runtimes out of the box.
 const playwright = require('playwright-aws-lambda');
 
 exports.handler = async (event, context) => {
-  let result = null;
   let browser = null;
 
   try {
@@ -33,7 +32,7 @@ exports.handler = async (event, context) => {
   } catch (error) {
     throw error;
   } finally {
-    if (browser !== null) {
+    if (browser) {
       await browser.close();
     }
   }
