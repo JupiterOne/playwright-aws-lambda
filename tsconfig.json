@@ -13,7 +13,7 @@
     "allowJs": false,
     "moduleResolution": "node",
     "module": "commonjs",
-    "target": "ESNext",
+    "target": "ES2019",
     "pretty": true,
     "inlineSourceMap": false,
     "inlineSources": false,
