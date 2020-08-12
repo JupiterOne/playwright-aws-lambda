@@ -1,5 +1,8 @@
 # playwright-aws-lambda
 
+![CI](https://github.com/JupiterOne/playwright-aws-lambda/workflows/CI/badge.svg)
+[![NPM](https://img.shields.io/npm/v/playwright-aws-lambda)](https://www.npmjs.com/package/playwright-aws-lambda)
+
 Support for Playwright running on AWS Lambda and Google Cloud Functions.
 
 **NOTE**: Currently only Chromium is supported.
