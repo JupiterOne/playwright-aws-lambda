@@ -20,4 +20,4 @@ jobs:
     - name: Build project
       run: yarn run build
     - name: Test lambda function
-      run: bash buildbots/stub.sh
+      run: bash buildbots/test.sh

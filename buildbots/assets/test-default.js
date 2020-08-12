@@ -1,4 +1,5 @@
-const playwright = require('../dist/src/');
+const playwright = require('../../dist/src/');
+const assert = require('assert');
 
 exports.handler = async (event, context) => {
   let browser = null;
@@ -9,11 +10,16 @@ exports.handler = async (event, context) => {
 
     const page = await context.newPage();
     await page.goto(event.url || 'https://example.com');
+
     const data = await page.screenshot();
-    if (data.length === 0) {
-      throw new Error(`Screenshot is empty`);
-    }
-    console.log('Page title: ', await page.title());
+    assert(data.length > 0, 'Page screenshot is empty');
+
+    assert((await page.title()) === 'Google', 'Title does not match');
+
+    // Test so it does not crash
+    await page.setContent('<span id="icon">🎭</span>');
+
+    console.log('inside-lambda: Passed tests');
   } catch (error) {
     throw error;
   } finally {

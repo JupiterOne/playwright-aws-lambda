@@ -1,8 +1,8 @@
 # playwright-aws-lambda
 
-Support for PlayWright running on AWS Lambda and Google Cloud Functions.
+Support for Playwright running on AWS Lambda and Google Cloud Functions.
 
-NOTE: Currently only Chromium is supported.
+**NOTE**: Currently only Chromium is supported.
 
 ## Install
 
@@ -12,8 +12,8 @@ npm install playwright-core playwright-aws-lambda --save
 
 ## Usage
 
-This package works with the `nodejs8.10`, `nodejs10.x` and `nodejs12.x` AWS
-Lambda runtimes out of the box.
+This package works with the `nodejs10.x` and `nodejs12.x` AWS Lambda runtimes
+out of the box.
 
 ```javascript
 const playwright = require('playwright-aws-lambda');
@@ -41,9 +41,22 @@ exports.handler = async (event, context) => {
 
 ## API
 
-| Method / Property | Returns                                  | Description                    |
-| ----------------- | ---------------------------------------- | ------------------------------ |
-| `launchChromium`  | `{!Promise<playwright.ChromiumBrowser>}` | Launches the Chromium browser. |
+| Method / Property | Returns                                  | Description                           |
+| ----------------- | ---------------------------------------- | ------------------------------------- |
+| `launchChromium`  | `{!Promise<playwright.ChromiumBrowser>}` | Launches the Chromium browser.        |
+| `loadFont(url)`   | `{Promise<void>}`                        | Downloads and activates a custom font |
+
+### Loading additional fonts
+
+If you need custom font support by e.g. emojicons in your browser, you have to
+load it by using the `loadFont(url: string)` function before you launch the
+browser.
+
+```js
+await loadFont(
+  'https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf'
+);
+```
 
 ## Thanks / Credits
 

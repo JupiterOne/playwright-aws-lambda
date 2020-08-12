@@ -1,15 +1,20 @@
 import { promises as fsPromises } from 'fs';
-import { join } from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
+import { promisify } from 'util';
+import * as https from 'https';
+
 import * as playwright from 'playwright-core';
+import { LaunchOptions } from 'playwright-core';
+
 import isLambdaRuntimeEnvironment from './util/isLambdaRuntimeEnvironment';
 import isHeadlessModeEnabled from './util/isHeadlessModeEnabled';
 import fileExists from './util/fileExists';
-import setEnvironmentVariables from './util/setEnvironmentVariables';
-import { LaunchOptions } from 'playwright-core';
+import getEnvironmentVariables, {
+  AWS_FONT_DIR,
+} from './util/getEnvironmentVariables';
 
 const { inflate } = require('lambdafs');
-
-setEnvironmentVariables();
 
 /**
  * Returns a list of recommended additional Chromium flags.
@@ -80,7 +85,7 @@ async function getChromiumExecutablePath(
     return '/tmp/chromium';
   }
 
-  const input = join(__dirname, 'bin');
+  const input = path.join(__dirname, 'bin');
   const promises = [
     inflate(`${input}/chromium.br`),
     inflate(`${input}/swiftshader.tar.br`),
@@ -99,12 +104,45 @@ export async function launchChromium(launchOptions?: Partial<LaunchOptions>) {
   const args = getChromiumArgs(headless);
   const executablePath = await getChromiumExecutablePath(headless);
 
+  const env: LaunchOptions['env'] = {
+    ...(await getEnvironmentVariables()),
+    ...(launchOptions?.env || {}),
+  };
   const browser = await playwright.chromium.launch({
     args,
     executablePath,
     headless,
+    env,
     ...launchOptions,
   });
 
   return browser;
 }
+
+export const loadFont = async (input: string) =>
+  new Promise(async (resolve, reject) => {
+    const url = new URL(input);
+    const output = path.join(AWS_FONT_DIR, url.pathname.split('/').pop()!);
+    if (await promisify(fs.exists)(output)) {
+      resolve();
+      return;
+    }
+    if (!fs.existsSync(AWS_FONT_DIR)) {
+      await fsPromises.mkdir(AWS_FONT_DIR);
+    }
+    const stream = fs.createWriteStream(output);
+    stream.once('error', (error) => {
+      return reject(error);
+    });
+    https.get(input, (response) => {
+      response.on('data', (chunk) => {
+        stream.write(chunk);
+      });
+
+      response.once('end', () => {
+        stream.end(() => {
+          return resolve();
+        });
+      });
+    });
+  });
