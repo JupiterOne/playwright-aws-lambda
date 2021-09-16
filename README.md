@@ -15,7 +15,7 @@ npm install playwright-core playwright-aws-lambda --save
 
 ## Usage
 
-This package works with the `nodejs10.x` and `nodejs12.x` AWS Lambda runtimes
+This package works with the `nodejs10.x`, `nodejs12.x` and `nodejs14.x` AWS Lambda runtimes
 out of the box.
 
 ```javascript
