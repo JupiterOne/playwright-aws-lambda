@@ -120,7 +120,7 @@ export async function launchChromium(launchOptions?: Partial<LaunchOptions>) {
 }
 
 export const loadFont = async (input: string) =>
-  new Promise(async (resolve, reject) => {
+  new Promise<void>(async (resolve, reject) => {
     const url = new URL(input);
     const output = path.join(AWS_FONT_DIR, url.pathname.split('/').pop()!);
     if (await promisify(fs.exists)(output)) {

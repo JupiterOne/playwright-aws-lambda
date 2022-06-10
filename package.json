@@ -22,7 +22,7 @@
     "format-code": "prettier --write '**/*.[jt]s'"
   },
   "dependencies": {
-    "lambdafs": "^1.3.0"
+    "lambdafs": "^2.1.1"
   },
   "peerDependencies": {
     "playwright-core": "^1"
