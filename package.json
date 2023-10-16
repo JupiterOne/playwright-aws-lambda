@@ -2,9 +2,13 @@
   "name": "playwright-aws-lambda",
   "version": "0.10.0",
   "description": "Support for running Microsoft's Playwrite on AWS Lambda and Google Cloud functions",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JupiterOne/playwright-aws-lambda"
+  },
+  "license": "MIT",
   "main": "./dist/src/",
   "author": "Austin Kelleher, a@alk.im",
-  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
