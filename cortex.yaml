@@ -10,5 +10,6 @@ info:
   x-cortex-owners:
     - type: group
       name: JupiterOne/janus
-  x-cortex-service-groups: tier-4
   x-cortex-tag: playwright-aws-lambda
+  x-cortex-service-groups:
+    - tier-4
