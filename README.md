@@ -61,6 +61,16 @@ await loadFont(
 );
 ```
 
+### Deploying as lambda layer
+
+Run this command and then publish playwright-aws-lambda.zip on AWS Lambda Layer
+
+```
+git clone --depth=1 https://github.com/JupiterOne/playwright-aws-lambda.git && \
+cd playwright-aws-lambda && \
+make playwright-aws-lambda.zip
+```
+
 ## Thanks / Credits
 
 This project is based on the work of
