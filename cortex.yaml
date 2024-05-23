@@ -9,7 +9,7 @@ info:
       repository: JupiterOne/playwright-aws-lambda
   x-cortex-owners:
     - type: group
-      name: JupiterOne/janus
+      name: JupiterOne/Apps
   x-cortex-tag: playwright-aws-lambda
   x-cortex-service-groups:
     - tier-4
