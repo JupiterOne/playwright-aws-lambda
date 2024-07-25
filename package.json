@@ -1,6 +1,6 @@
 {
   "name": "playwright-aws-lambda",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "Support for running Microsoft's Playwrite on AWS Lambda and Google Cloud functions",
   "repository": {
     "type": "git",
