@@ -1,0 +1,90 @@
+name: "Peril"
+
+on:
+  pull_request:
+
+env: 
+  TRANSPONDER_DOCKER_IMAGE: 081157560428.dkr.ecr.us-east-1.amazonaws.com/transponder:1
+  SECURITY_SCAN_IMAGE: ghcr.io/jupiterone/security-scan:latest
+
+jobs:
+  Peril:
+    name: Peril
+    permissions:
+      id-token: write
+      contents: read
+      packages: read
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+        
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 14.x
+    
+    - name: Run build
+      run: yarn install
+    
+    - name: Get Variables
+      id: get-vars
+      run: |
+        if [[ "${GITHUB_REF}" == 'ref/head/main' && "${GITHUB_EVENT_NAME}" == 'push' ]];
+        then
+          echo ::set-output name=aws-oidc-role::arn:aws:iam::081157560428:role/github-main-role
+        else
+          echo ::set-output name=aws-oidc-role::arn:aws:iam::081157560428:role/github-pull-request-role
+        fi
+    
+    - name: Configure aws credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: ${{ steps.get-vars.outputs.aws-oidc-role }}
+        role-session-name: pr-role-session
+        aws-region: us-east-1
+
+    - name: ECR login
+      uses: aws-actions/amazon-ecr-login@v1
+      id: amazon-ecr-login
+
+    - name: Login to GHCR
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.PACKAGE_TOKEN }}
+
+    - name: Pull security-scan
+      run: |
+        docker pull $SECURITY_SCAN_IMAGE
+    
+    - name: Run security-scan
+      run: |
+        docker run \
+        --user root \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        -v `pwd`:`pwd` \
+        -e AWS_ACCESS_KEY_ID=${{ env.AWS_ACCESS_KEY_ID }} \
+        -e AWS_SECRET_ACCESS_KEY=${{ env.AWS_SECRET_ACCESS_KEY }} \
+        -e AWS_SESSION_TOKEN=${{ env.AWS_SESSION_TOKEN }} \
+        -e GITHUB_REPOSITORY=$GITHUB_REPOSITORY \
+        -e GITHUB_REF_NAME=$GITHUB_REF_NAME \
+        -e GITHUB_RUN_NUMBER=$GITHUB_RUN_NUMBER \
+        -e GITHUB_SERVER_URL=$GITHUB_SERVER_URL \
+        -e GITHUB_RUN_ID=$GITHUB_RUN_ID \
+        -e MODE=ci \
+        -w `pwd` $SECURITY_SCAN_IMAGE
+
+    - name: Pull transponder
+      run: |
+        docker pull $TRANSPONDER_DOCKER_IMAGE
+
+    - name: Run transponder
+      run: |
+        docker run --rm -v `pwd`:`pwd` -w `pwd` \
+        -e J1_API_KEY=${{ secrets.J1_API_KEY_TRANSPONDER }} \
+        -e J1_API_DOMAIN=${{ secrets.J1_API_DOMAIN_TRANSPONDER }} \
+        -e J1_ACCOUNT_ID=${{ secrets.J1_ACCOUNT_ID_TRANSPONDER }} \
+        $TRANSPONDER_DOCKER_IMAGE
